@@ -152,6 +152,7 @@ class Feed(DeviceListener):
             self._xdir = None
             self._rssi = None
             self._firmware_version = firmware_version
+            self._mac_address = None
 
         def __repr__(self):
             result = '<MyoProxy ('
@@ -240,6 +241,13 @@ class Feed(DeviceListener):
         def emg(self):
             with self.synchronized:
                 return self._emg
+
+        @property
+        def mac_address(self):
+            with self.synchronized:
+                if not self._mac_address:
+                    self._mac_address = MacAddress(self._myo.get_mac_address())
+            return self._mac_address
 
         def set_locking_policy(self, locking_policy):
             with self.synchronized:

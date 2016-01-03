@@ -368,6 +368,9 @@ class Myo(BaseTypeWrapper):
         lib.init_func(
             'myo_notify_user_action', enums.Result,
             Myo, enums.UserActionType, POINTER(ErrorDetails))
+        lib.init_func(
+            'get_mac_address', ctypes.c_uint64,
+            Myo)
 
     def vibrate(self, vibration_type):
         self._notnull()
@@ -425,6 +428,10 @@ class Myo(BaseTypeWrapper):
                 self, user_action_type, byref(error))
         finally:
             error.raise_on_error()
+
+    def get_mac_address(self):
+        self._notnull()
+        return lib.get_mac_address(self)
 
 
 class Event(BaseTypeWrapper):
